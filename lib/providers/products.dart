@@ -68,7 +68,7 @@ class Products with ChangeNotifier {
   //   notifyListeners();
   // }
 
-  void addProduct(Product product) {
+  Future<void> addProduct(Product product) {
     // final url = Uri.parse(
     //   'https://flutter-app1-eadee-default-rtdb.asia-southeast1.firebasedatabase.app/products.json',
     // );
@@ -76,7 +76,7 @@ class Products with ChangeNotifier {
       'flutter-app1-eadee-default-rtdb.asia-southeast1.firebasedatabase.app',
       '/products.json',
     );
-    http
+    return http
         .post(
       url,
       body: json.encode({
@@ -88,7 +88,7 @@ class Products with ChangeNotifier {
       }),
     )
         .then((response) {
-          print(json.decode(response.body));
+          // print(json.decode(response.body));
       final newProduct = Product(
         id: json.decode(response.body)['name'],
         title: product.title,
