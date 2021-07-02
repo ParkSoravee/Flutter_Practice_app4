@@ -41,6 +41,7 @@ class Products with ChangeNotifier {
     //       'https://upload.wikimedia.org/wikipedia/commons/thumb/1/14/Cast-Iron-Pan.jpg/1024px-Cast-Iron-Pan.jpg',
     // ),
   ];
+
   // var _showFavoritesOnly = false;
   final String authToken;
 
@@ -80,7 +81,7 @@ class Products with ChangeNotifier {
       // print(json.decode(response.body));
       final extractedData = json.decode(response.body) as Map<String, dynamic>;
       // actually we know Map<String, Map> but it'll error
-      if(extractedData == null) {
+      if (extractedData == null) {
         return;
       }
       final List<Product> loadedProducts = [];
@@ -104,9 +105,8 @@ class Products with ChangeNotifier {
   }
 
   Future<void> addProduct(Product product) async {
-    final url = Uri.https(
-      'flutter-app1-eadee-default-rtdb.asia-southeast1.firebasedatabase.app',
-      '/products.json',
+    final url = Uri.parse(
+      'https://flutter-app1-eadee-default-rtdb.asia-southeast1.firebasedatabase.app/products.json?auth=$authToken',
     );
     try {
       final response = await http.post(
@@ -139,9 +139,8 @@ class Products with ChangeNotifier {
   Future<void> updateProduct(String id, Product newProduct) async {
     final prodIndex = _items.indexWhere((prod) => prod.id == id);
     if (prodIndex >= 0) {
-      final url = Uri.https(
-        'flutter-app1-eadee-default-rtdb.asia-southeast1.firebasedatabase.app',
-        '/products/$id.json',
+      final url = Uri.parse(
+        'https://flutter-app1-eadee-default-rtdb.asia-southeast1.firebasedatabase.app/products/$id.json?auth=$authToken',
       );
       try {
         await http.patch(url,
@@ -162,9 +161,8 @@ class Products with ChangeNotifier {
   }
 
   Future<void> deleteProduct(String id) async {
-    final url = Uri.https(
-      'flutter-app1-eadee-default-rtdb.asia-southeast1.firebasedatabase.app',
-      '/products/$id.json',
+    final url = Uri.parse(
+      'https://flutter-app1-eadee-default-rtdb.asia-southeast1.firebasedatabase.app/products/$id.json?auth=$authToken',
     );
     final existingProductIndex = _items.indexWhere((prod) => prod.id == id);
     var existingProduct = _items[existingProductIndex];
@@ -172,7 +170,7 @@ class Products with ChangeNotifier {
     _items.removeAt(existingProductIndex);
     notifyListeners();
     final respond = await http.delete(url);
-    if(respond.statusCode >= 400) {
+    if (respond.statusCode >= 400) {
       _items.insert(existingProductIndex, existingProduct);
       notifyListeners();
       throw HttpException('Could not delete product.');

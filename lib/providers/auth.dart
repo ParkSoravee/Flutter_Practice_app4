@@ -35,7 +35,7 @@ class Auth with ChangeNotifier {
             'password': password,
             'returnSecureToken': true,
           }));
-      // print(json.decode(response.body));
+      print(json.decode(response.body));
       final responseData = jsonDecode(response.body);
       if (responseData['error'] != null) {
         print('error http');
