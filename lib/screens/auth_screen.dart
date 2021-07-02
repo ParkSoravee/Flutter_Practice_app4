@@ -139,7 +139,7 @@ class _AuthCardState extends State<AuthCard> {
         );
       } else {
         // Sign user up
-        await Provider.of<Auth>(context, listen: false).singup(
+        await Provider.of<Auth>(context, listen: false).signup(
           _authData['email'],
           _authData['password'],
         );
