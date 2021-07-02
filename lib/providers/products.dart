@@ -41,8 +41,10 @@ class Products with ChangeNotifier {
     //       'https://upload.wikimedia.org/wikipedia/commons/thumb/1/14/Cast-Iron-Pan.jpg/1024px-Cast-Iron-Pan.jpg',
     // ),
   ];
-
   // var _showFavoritesOnly = false;
+  final String authToken;
+
+  Products(this.authToken, this._items);
 
   List<Product> get items {
     // if(_showFavoritesOnly) {
@@ -70,9 +72,8 @@ class Products with ChangeNotifier {
   // }
 
   Future<void> fetchAndSetsProducts() async {
-    final url = Uri.https(
-      'flutter-app1-eadee-default-rtdb.asia-southeast1.firebasedatabase.app',
-      '/products.json',
+    final url = Uri.parse(
+      'https://flutter-app1-eadee-default-rtdb.asia-southeast1.firebasedatabase.app/products.json?auth=$authToken',
     );
     try {
       final response = await http.get(url);
@@ -97,6 +98,7 @@ class Products with ChangeNotifier {
       _items = loadedProducts;
       notifyListeners();
     } catch (error) {
+      print(error);
       throw error;
     }
   }
