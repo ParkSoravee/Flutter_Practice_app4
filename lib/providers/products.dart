@@ -73,9 +73,10 @@ class Products with ChangeNotifier {
   //   notifyListeners();
   // }
 
-  Future<void> fetchAndSetsProducts() async {
+  Future<void> fetchAndSetsProducts([bool filterByUser = false]) async {
+    final filterString = filterByUser ? 'orderBy="creatorId"&equalTo="$userId"' : '';
     var url = Uri.parse(
-      'https://flutter-app1-eadee-default-rtdb.asia-southeast1.firebasedatabase.app/products.json?auth=$authToken',
+      'https://flutter-app1-eadee-default-rtdb.asia-southeast1.firebasedatabase.app/products.json?auth=$authToken&$filterString',
     );
     try {
       final response = await http.get(url);
@@ -122,6 +123,7 @@ class Products with ChangeNotifier {
           'description': product.description,
           'imageUrl': product.imageUrl,
           'price': product.price,
+          'creatorId' : userId,
         }),
       );
 
